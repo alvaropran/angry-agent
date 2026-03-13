@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angry Agent — Incident Devil's Advocate</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>Angry Agent</h1>
+    <p class="subtitle">Incident Devil's Advocate</p>
+  </header>
+
+  <main>
+    <!-- Input Section -->
+    <section class="input-section">
+      <div class="sample-bar">
+        <select id="sample-select">
+          <option value="">Load a sample incident...</option>
+        </select>
+        <button id="load-sample" type="button">Load</button>
+      </div>
+
+      <form id="incident-form">
+        <label for="summary">Incident Summary *</label>
+        <textarea id="summary" name="summary" rows="4" required
+          placeholder="Describe the incident: what happened, when, and what you observed..."></textarea>
+
+        <details>
+          <summary>Optional context (logs, metrics, postmortem, notes)</summary>
+          <label for="logs">Logs</label>
+          <textarea id="logs" name="logs" rows="5"
+            placeholder="Paste relevant log lines..."></textarea>
+
+          <label for="metrics">Metrics</label>
+          <textarea id="metrics" name="metrics" rows="3"
+            placeholder="Key metrics, dashboard observations, numbers..."></textarea>
+
+          <label for="postmortemDraft">Postmortem Draft</label>
+          <textarea id="postmortemDraft" name="postmortemDraft" rows="3"
+            placeholder="Existing postmortem draft to challenge..."></textarea>
+
+          <label for="additionalContext">Additional Context</label>
+          <textarea id="additionalContext" name="additionalContext" rows="2"
+            placeholder="Deploy times, recent changes, team notes..."></textarea>
+        </details>
+
+        <button id="analyze-btn" type="submit">Analyze Incident</button>
+      </form>
+    </section>
+
+    <!-- Status -->
+    <div id="status" class="status hidden"></div>
+
+    <!-- Results -->
+    <section id="results" class="results hidden">
+      <!-- Brief -->
+      <div id="brief-panel" class="brief-panel">
+        <h2>Incident Brief</h2>
+        <p id="brief-text"></p>
+        <div id="consensus-badge" class="badge"></div>
+      </div>
+
+      <!-- 4-panel grid -->
+      <div class="panel-grid">
+        <div class="panel panel-analyst">
+          <h3>Primary Hypothesis</h3>
+          <div id="analyst-confidence" class="confidence-bar"></div>
+          <p id="analyst-hypothesis" class="hypothesis-text"></p>
+          <div id="analyst-evidence" class="detail-list"></div>
+          <div id="analyst-reasoning" class="reasoning"></div>
+        </div>
+
+        <div class="panel panel-angry">
+          <h3>Counter-Hypothesis</h3>
+          <p id="counter-hypothesis" class="hypothesis-text"></p>
+          <div id="counter-weaknesses" class="detail-list"></div>
+          <div id="counter-blindspots" class="detail-list"></div>
+        </div>
+
+        <div class="panel panel-evidence">
+          <h3>Missing Evidence</h3>
+          <div id="missing-evidence" class="detail-list"></div>
+        </div>
+
+        <div class="panel panel-actions">
+          <h3>Safe Next Actions</h3>
+          <div id="safe-actions" class="detail-list"></div>
+        </div>
+      </div>
+
+      <!-- Disconfirming checks -->
+      <div class="panel panel-checks">
+        <h3>Disconfirming Checks</h3>
+        <div id="disconfirming-checks" class="detail-list"></div>
+      </div>
+
+      <!-- Metadata -->
+      <div id="meta" class="meta"></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

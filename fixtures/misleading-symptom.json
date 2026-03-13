@@ -1,0 +1,13 @@
+{
+  "description": "CPU spike looks like the cause, but the real issue is a lock contention bug triggered by a schema migration that ran concurrently with peak traffic.",
+  "input": {
+    "summary": "CPU usage on the primary API server spiked to 98% at 11:05 UTC, and response times tripled. The spike correlates with a burst of traffic from a partner integration that started at 11:00 UTC.",
+    "logs": "11:00:00 INFO  [partner-gw] Partner X bulk sync started: 50,000 records\n11:03:22 INFO  [migrations] Running migration 0042_add_index_on_orders_status (background)\n11:05:01 WARN  [api] Response time p99: 300ms → 950ms\n11:05:15 WARN  [system] CPU usage: 98% on api-server-1\n11:05:30 ERROR [db] Lock wait timeout: UPDATE orders SET status = ... (waited 30s)\n11:06:00 ERROR [api] 5 requests failed with 500: database lock timeout",
+    "metrics": "CPU: 45% → 98%. DB lock waits: 0 → 47 concurrent. Partner traffic: 800 req/min (normal burst). DB migration 0042 started at 11:03."
+  },
+  "expectedBehavior": {
+    "analystTrap": "The CPU spike and partner traffic burst are strongly correlated in time, tempting the analyst to blame partner traffic volume as the root cause.",
+    "realCause": "The background schema migration (0042_add_index_on_orders_status) acquired locks that conflicted with the high-write partner sync, causing lock contention that consumed CPU in spin-waits.",
+    "idealAngryAgentBehavior": "Should question why the same partner traffic volume didn't cause issues before, and point to the migration timing as the real differentiator."
+  }
+}

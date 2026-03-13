@@ -1,0 +1,29 @@
+{
+  "name": "angry-agent",
+  "version": "1.0.0",
+  "description": "Incident Devil's Advocate — AI-powered incident analysis that challenges your root cause assumptions",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/schemas.test.js && node tests/prompts.test.js && node tests/pipeline.test.js && node tests/eval.test.js && node tests/server.test.js"
+  },
+  "keywords": [
+    "incident-response",
+    "postmortem",
+    "root-cause-analysis",
+    "devops",
+    "sre",
+    "ai-agent",
+    "claude"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "ajv": "^8.18.0",
+    "hono": "^4.7.10",
+    "@hono/node-server": "^1.14.1"
+  }
+}

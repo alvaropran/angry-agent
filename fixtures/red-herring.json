@@ -1,0 +1,14 @@
+{
+  "description": "A noisy error log from an unrelated service dominates attention, but the real issue is a silent configuration drift in the CDN layer.",
+  "input": {
+    "summary": "Image loading on the product pages became extremely slow (~8s per image) starting at 16:00 UTC. At the same time, the recommendation engine started throwing NullPointerExceptions at a high rate.",
+    "logs": "16:00:05 ERROR [reco-engine] NullPointerException at RecoService.java:142 - user profile was null\n16:00:06 ERROR [reco-engine] NullPointerException at RecoService.java:142\n16:00:07 ERROR [reco-engine] NullPointerException at RecoService.java:142\n16:00:10 WARN  [cdn-origin] Cache miss rate: 12% → 89%\n16:00:15 INFO  [cdn-config] Config reload completed: /etc/cdn/routing.yaml\n16:01:00 WARN  [image-svc] Slow upstream response: avg 7800ms (threshold: 500ms)\n16:05:00 ERROR [reco-engine] 847 NullPointerExceptions in last 5 minutes",
+    "metrics": "Image load time: 200ms → 8000ms. CDN cache hit rate: 88% → 11%. Reco engine errors: 2/min → 170/min. Image service CPU: normal. CDN origin bandwidth: 50Mbps → 400Mbps.",
+    "additionalContext": "The CDN config reload at 16:00:15 was a scheduled rotation. The reco engine NPEs have been a known low-priority bug for weeks but the rate increased due to higher page load times causing retry storms."
+  },
+  "expectedBehavior": {
+    "redHerring": "The NullPointerExceptions in the recommendation engine are loud and numerous but are a pre-existing bug amplified by the real issue, not the cause.",
+    "realCause": "The CDN config reload at 16:00:15 introduced a routing change that caused most cached content to become cache misses, forcing all image requests back to origin.",
+    "idealAngryAgentBehavior": "Should dismiss the reco engine errors as a known bug and focus on the CDN cache hit rate collapse and the config reload timing."
+  }
+}

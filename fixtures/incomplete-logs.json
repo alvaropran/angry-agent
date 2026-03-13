@@ -1,0 +1,13 @@
+{
+  "description": "Logs are truncated and missing the critical 2-minute window when the failure actually started. Forces the analysis to acknowledge uncertainty.",
+  "input": {
+    "summary": "Users reported inability to log in starting around 08:30 UTC. By 08:45 the auth service was returning 500 errors for all login attempts. A restart at 09:00 resolved the issue.",
+    "logs": "08:15:00 INFO  [auth] Health check OK\n08:15:30 INFO  [auth] Login success: user_4521 (OAuth)\n08:16:00 INFO  [auth] Login success: user_8832 (password)\n[... logs missing from 08:28 to 08:40 due to log rotation ...]\n08:40:12 ERROR [auth] Failed to validate JWT: signing key not found\n08:40:13 ERROR [auth] Failed to validate JWT: signing key not found\n08:41:00 ERROR [auth] 500 Internal Server Error: cannot reach key store\n08:45:00 CRIT  [auth] All login attempts failing. Key store connection: REFUSED",
+    "additionalContext": "Log rotation was misconfigured and overwrote the 08:28-08:40 window. The key store is a Redis cluster used for JWT signing key caching."
+  },
+  "expectedBehavior": {
+    "missingData": "The critical 12-minute gap (08:28-08:40) hides the initial failure trigger. Analysis must flag that conclusions are tentative without this window.",
+    "possibleCauses": "Redis key store failure, key rotation gone wrong, network partition between auth service and Redis, or a config change during the gap.",
+    "idealSynthesizerBehavior": "Should rank confidence as low due to missing evidence and recommend recovering the rotated logs before committing to a root cause."
+  }
+}

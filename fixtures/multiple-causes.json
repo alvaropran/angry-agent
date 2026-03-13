@@ -1,0 +1,18 @@
+{
+  "description": "Two independent failures happened within minutes of each other, making it ambiguous which one caused the user-visible outage.",
+  "input": {
+    "summary": "Checkout flow broke at 13:10 UTC. Users see 'Unable to process payment' errors. Two things happened nearly simultaneously: a database failover completed at 13:08 and a payment provider certificate was rotated at 13:09.",
+    "logs": "13:08:00 WARN  [db] Primary database failover initiated (planned maintenance)\n13:08:15 INFO  [db] Failover complete: new primary is db-replica-2\n13:08:16 WARN  [db] 12 in-flight transactions were rolled back during failover\n13:09:00 INFO  [payment] TLS certificate rotated for payment gateway endpoint\n13:09:01 ERROR [payment] SSL handshake failed: certificate chain incomplete\n13:09:02 ERROR [payment] SSL handshake failed: certificate chain incomplete\n13:10:00 ERROR [checkout] Payment failed for order #88421: upstream error\n13:10:01 ERROR [checkout] Payment failed for order #88422: upstream error\n13:10:30 INFO  [db] All application connections re-established to new primary",
+    "metrics": "Checkout success rate: 99.8% → 0%. DB failover duration: 15 seconds. Payment SSL errors: 0 → 100%. DB connections re-established by 13:10:30. Payment SSL errors persist after 13:10:30.",
+    "additionalContext": "The DB failover was planned maintenance with a 15-second window. The certificate rotation was automated via cert-manager. Both events were expected but their proximity was coincidental."
+  },
+  "expectedBehavior": {
+    "plausibleCauses": [
+      "Database failover caused rolled-back transactions and brief connection loss, breaking in-flight checkouts",
+      "Incomplete TLS certificate chain after rotation broke all payment gateway communication",
+      "Both failures compounded: DB failover disrupted initial requests, then payment cert errors prevented recovery"
+    ],
+    "keyDiscriminator": "The DB connections were re-established by 13:10:30 but payment SSL errors persisted, suggesting the certificate issue is the ongoing cause even if the DB failover contributed to the initial impact.",
+    "idealSynthesizerBehavior": "Should present both causes, note the timeline overlap, and recommend fixing the cert chain first since it is the persisting failure, while confirming DB connectivity is restored."
+  }
+}
