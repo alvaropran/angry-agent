@@ -158,6 +158,8 @@ The `fixtures/` directory contains 4 evaluation scenarios:
 - **Frontend**: Vanilla HTML/CSS/JS (no build step)
 - **Tests**: Node.js built-in `assert`
 
+- Currently no API KEY is configured for cost concerns but the above is a demo using anthropic key
+
 ## License
 
 MIT
