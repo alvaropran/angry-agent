@@ -1,5 +1,10 @@
 # Angry Agent
 
+Inspired by this article: https://www.thoughtworks.com/content/dam/thoughtworks/documents/report/tw_future%20_of_software_development_retreat_%20key_takeaways.pdf
+
+I wanted to explore a way of how the new age of AI agents and software development is fundementally changing. As code becomes easier to produce, the bottleneck becomes if that code is actually beneficial and safe
+
+
 **Incident Devil's Advocate** — an AI-powered incident analysis tool that challenges your root cause assumptions before you act on them.
 
 Paste an incident summary, logs, and metrics. Angry Agent runs three AI agents in sequence:
@@ -10,9 +15,6 @@ Paste an incident summary, logs, and metrics. Angry Agent runs three AI agents i
 
 The result: fewer knee-jerk responses, more evidence-based incident resolution.
 
-![Angry Agent Demo](screenshots/demo-input.png)
-<!-- Replace with your own screenshot of the input form with a sample incident loaded -->
-
 ## Why
 
 During incidents, teams anchor on the first plausible hypothesis and skip disconfirming evidence. Angry Agent forces a structured adversarial review before you act — the same way good postmortems work, but in real-time.
@@ -22,26 +24,26 @@ During incidents, teams anchor on the first plausible hypothesis and skip discon
 ### Input Form
 Load a sample incident or paste your own context — logs, metrics, postmortem drafts.
 
-![Input Form](screenshots/input-form.png)
-<!-- Replace: screenshot of the input form with sample loaded (the cascading timeouts example works well) -->
+<img width="1928" height="1757" alt="Demo of angry agent" src="https://github.com/user-attachments/assets/473996d3-6d56-486f-8a0c-6d5af3868d9c" />
+
 
 ### Hypothesis Analysis
 Two competing hypotheses side by side — the analyst's primary cause and the devil's advocate counter-hypothesis.
 
-![Hypothesis Panels](screenshots/hypothesis-panels.png)
-<!-- Replace: screenshot showing the Primary Hypothesis and Counter-Hypothesis panels -->
+<img width="482" height="932" alt="Screenshot 2026-03-13 at 3 04 45 PM" src="https://github.com/user-attachments/assets/3cff3abc-0f14-43e3-8c09-5af1e67c4100" />
+
 
 ### Evidence & Actions
 Missing evidence prioritized by criticality, and safe next actions ranked by risk level.
 
-![Evidence and Actions](screenshots/evidence-actions.png)
-<!-- Replace: screenshot showing the Missing Evidence and Safe Next Actions panels -->
+<img width="486" height="871" alt="Screenshot 2026-03-13 at 3 04 50 PM" src="https://github.com/user-attachments/assets/d55cc9fb-1c7f-4bc5-90b4-0af94582d616" />
+
 
 ### Disconfirming Checks
 Specific checks that could disprove the primary hypothesis — each with what the result would mean.
 
-![Disconfirming Checks](screenshots/disconfirming-checks.png)
-<!-- Replace: screenshot showing the Disconfirming Checks panel and metadata footer -->
+<img width="481" height="455" alt="Screenshot 2026-03-13 at 3 04 55 PM" src="https://github.com/user-attachments/assets/4d292329-dd75-4d6d-ad76-661ba2422b37" />
+
 
 ## Quick Start
 
